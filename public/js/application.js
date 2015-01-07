@@ -153,7 +153,7 @@ Game.prototype.updateChessBoard = function(){
 }
 
 Game.prototype.updateSquare = function(x,y){
-  $("#x"+x+"y"+y).addClass(this.board.array[x][y].constructor.name + " " + this.board.array[x][y].color)
+  $("#x"+x+"y"+y).addClass(this.board.array[x][y].color+this.board.array[x][y].constructor.name)
 }
 
 function Board() {
@@ -259,19 +259,19 @@ function Pawn(color, x, y) {
 }
 
 Pawn.prototype.move = function(x,y) {
-  if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
-    if (this.moved == false)
-      if (x == this.x && x == this.y+1||this.y+2){
-        Board.array[this.x][this.y] = undefined
-        this.y = y
-        Board.array[this.x][this.y] = this
-      }
-    else {
-      Board.array[x][y] = undefined
-      Board.array[x][y+1] = this
+  if(onBoard(x,y) && this.y > y && withinMaxDistance(this.x,this.y,x,y)){
+    if (!this.moved && (this.y+1 == y || this.y+2 == y) && this.x == x && game.board.array[x][y] == undefined){
+      game.board.array[this.x][this.y] = undefined
+      this.y = y
+      game.board.array[this.x][this.y] = this
+    } else if((this.x + 1 == x || this.x - 1 == x) && this.y + 1 == y && game.board.array[x][y] != undefined){
+      game.board.array[this.x][this.y] = undefined
+      this.x = x
+      this.y = y
+      game.board.array[this.x][this.y] = this
     }
-    this.moved = true
   }
+  return false
 }
 
 Pawn.prototype.take = function(piece) {
