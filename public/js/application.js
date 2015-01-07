@@ -6,8 +6,24 @@ $(document).ready(function() {
   // See: http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
   // helper functions
   game = new Game();
-
+  bindEvents();
 });
+
+function bindEvents(){
+  $(".square").click()
+}
+
+function squareClicked(){ //incomplete
+  if(clicked===undefined){
+    var clicked = false
+  }
+  if(clicked === false){
+    var coords = [$(this).attr('id')[1],$(this).attr('id')[3]]
+    clicked = true
+  }
+  if(clicked === true)
+}
+
 var withinMaxDistance = function(x1,y1,x2,y2){
   var desiredDistance = findDistance(x1,y1,x2,y2)
 
