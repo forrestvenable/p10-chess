@@ -1,0 +1,29 @@
+.board {
+position: absolute;
+
+top:10%;
+left:10%;
+
+background-color: black;
+
+width:640px;
+height:640px;
+}
+
+.square {
+  border:1px black;
+  width: 80px;
+  height:80px;
+  display:visible;
+  float:left;
+  margin:0px;
+  padding:0px;
+}
+
+.row:nth-child(odd) .square:nth-child(even){
+  background:white;
+}
+
+.row:nth-child(even) .square:nth-child(odd){
+  background:white;
+}

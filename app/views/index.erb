@@ -18,6 +18,18 @@
   <title></title>
 </head>
 <body>
-  <%= yield %>
+
+  <div>Hello world</div>
+  <div class="board">
+    <% 8.times do |x_index|%>
+      <span class="row">
+        <% 8.times do |y_index| %>
+          <div class="square"></div>
+        <% end %>
+      </span class="row">
+    <% end %>
+  </div>
+
 </body>
 </html>
+
