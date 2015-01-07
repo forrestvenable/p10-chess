@@ -1,84 +1,5 @@
 // helper functions
 
-// var squaresBlocked = function(x, y, direction) { //call this one to find which squares are blocked by pieces
-//   var solution = []
-//   if (direction == "diagonals") {
-//     solution[0] = squareBlocked(x,y,45)
-//     solution[1] = squareBlocked(x,y,135)
-//     solution[2] = squareBlocked(x,y,225)
-//     solution[3] = squareBlocked(x,y,315)
-//   }
-//   if (direction == "cardinals") {
-//     solution[0] = squareBlocked(x,y,0)
-//     solution[1] = squareBlocked(x,y,90)
-//     solution[2] = squareBlocked(x,y,180)
-//     solution[3] = squareBlocked(x,y,270)
-//   }
-//   return solution
-// }
-
-// var squareBlocked = function(x, y, angle){ // angle is measured in degrees from north
-//   // is this even necessary?
-//   // this doesn't look great, can I do something about it?
-//   if (angle == 0) {
-//     if(directionBlocked(x,y,0,1)){
-//       return directionBlocked(x,y,0,1)
-//     } else {
-//       return [x,7]
-//     }
-//   }
-//   if (angle == 45) {
-//     if(directionBlocked(x,y,1,1)){
-//     return directionBlocked(x,y,1,1)
-//     } else {
-//       return [7,7]
-//     }
-//   }
-//   if (angle == 90) {
-//     if(directionBlocked(x,y,1,0)){
-//     return directionBlocked(x,y,1,0)
-//     } else {
-//       return [7,y]
-//     }
-//   }
-//   if (angle == 135) {
-//     if(directionBlocked(x,y,1,-1)){
-//     return directionBlocked(x,y,1,-1)
-//     } else {
-//       return [7,0]
-//     }
-//   }
-//   if (angle == 180) {
-//     if(directionBlocked(x,y,0,-1)){
-//     return directionBlocked(x,y,0,-1)
-//     } else {
-//       return [x,0]
-//     }
-//   }
-//   if (angle == 225) {
-//     if(directionBlocked(x,y,-1,-1)){
-//     return directionBlocked(x,y,-1,-1)
-//     } else {
-//       return [0,0]
-//     }
-//   }
-//   if (angle == 270) {
-//     if(directionBlocked(x,y,-1,0)){
-//     return directionBlocked(x,y,-1,0)
-//     } else {
-//       return [0,y]
-//     }
-//   }
-//   if (angle == 315) {
-//     if(directionBlocked(x,y,-1,1)){
-//     return directionBlocked(x,y,-1,1)
-//     } else {
-//       return [0,7]
-//     }
-//   }
-// }
-
-
 var withinMaxDistance = function(x1,y1,x2,y2){
   var desiredDistance = findDistance(x1,y1,x2,y2)
 
@@ -125,7 +46,7 @@ var findDistance = function(x1,y1,x2,y2){
 }
 
 var distanceBlocked = function(x,y,directionX,directionY){ // gives distance at which piece's path is blocked
-  for (var i = 0; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) && 
+  for (var i = 0; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) &&
                    ((x+(i*directionX)>=0) && (y+(i*directionY)>=0)); i++){
     if (Board.array[x+(i*directionX)][y+(i*directionY]!==undefined){
       if(Board.array[x+(i*directionX)][y+(i*directionY].color==turn){
@@ -137,18 +58,6 @@ var distanceBlocked = function(x,y,directionX,directionY){ // gives distance at 
   }
   return null
 }
-
-// var directionBlocked = function(x,y,directionX,directionY){
-//   // For future reference this makes sure that neither x nor y go off the board
-//   // This looks horrible, can I clean up the loop's condition?
-//   for (var i = 0; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) && 
-//                    ((x+(i*directionX)>=0) && (y+(i*directionY)>=0)); i++){
-//     if (!Board.array[x+(i*directionX)][y+(i*directionY].null){
-//       return [x+(i*directionX),y+(i*directionY)]
-//     }
-//   }
-//   return null
-// }
 
 var onBoard = function(x,y){
   if (x>=0 && x<8 && y>=0 && y<8){
@@ -180,27 +89,6 @@ var inDiagonal = function(x1,y1,x2,y2){//DRY this up
   }
 
   return false
-
-  // Saved for future consideration
-
-  // var min = Math.min(x1,y1)
-  // var max = Math.max(x1,y1)
-  // var start = max1-min1
-
-  // if (max == x1) {
-  //   for (var i = 0; i<8; i++){
-  //     if(start+i==x2&&i==y2){
-  //       return true
-  //     }
-  //   }  
-  // }
-  // if (max == y1) {
-  //   for (var i = 0; i<8; i++){
-  //     if(i==x2&&start+i==y2){
-  //       return true
-  //     }
-  //   }
-  // }
 }
 
 var inEllShape = function(x1,y1,x2,y2){
@@ -213,17 +101,6 @@ var inEllShape = function(x1,y1,x2,y2){
   return false
 }
 
-// not used
-// var samePair = function(a1,a2,b1,b2){ 
-//   if (a1 == b1 && a2 == b2){
-//     return true
-//   }
-  
-//   if(a1==b2 && a2 == b1){
-//     return true
-//   }
-//   return false
-// }
 
 // objects
 var Game = function() {
@@ -334,7 +211,7 @@ Board.prototype.castle = function(color, rook, king){
 
       this.array[row][5] = rook
       rook.x = 5
- 
+
       this.array[row][4] = undefined
       this.array[row][7] = undefined
       return true
@@ -413,7 +290,7 @@ Knight.prototype.take = function(piece){
 Knight.prototype.move = function(x,y){
   // move in L shape
   // is not blocked
-  if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){  
+  if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
     if(inEllShape(this.x,this.y,x,y)){
       Board.array[this.x][this.y] = undefined
 
