@@ -2,7 +2,7 @@
   <% 8.times do |y_index|%>
     <span class="row">
       <% 8.times do |x_index| %>
-        <div class="square" <%= "x#{x_index}y#{7-y_index}"%>></div>
+        <div class="square" id=<%= "x#{x_index}y#{7-y_index}"%>></div>
       <% end %>
     </span class="row">
   <% end %>

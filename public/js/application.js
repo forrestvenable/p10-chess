@@ -143,7 +143,9 @@ Game.prototype.updateChessBoard = function(){
     for (var x = 0; x<8; x++){
       $("#x"+x+"y"+y).removeClass();
       $("#x"+x+"y"+y).addClass("square");
-      if (this.board.array[x][y] != undefined){
+      currentSquare = this.board.array[x][y]
+      if (currentSquare !== undefined){
+        // console.log(currentSquare)
         this.updateSquare(x,y);
       }
     }
@@ -155,18 +157,18 @@ Game.prototype.updateSquare = function(x,y){
 }
 
 function Board() {
-
-}
-
-Board.prototype.setup = function(){ // Can this be DRYed up?
   this.array = []
   for (var x = 0; x<8; x++){
     var row = []
     for (var y = 0; y<8; y++){
-      row[y] = []
+      row[y] = undefined
     }
   this.array[x] = row
   }
+}
+
+Board.prototype.setup = function(){ // Can this be DRYed up?
+
 
   // place pieces onto board
 
@@ -250,10 +252,10 @@ Board.prototype.castle = function(color, rook, king){
 }
 
 function Pawn(color, x, y) {
-  var moved = false
-  var color = color
-  var y = y
-  var x = x
+  this.moved = false,
+  this.color = color,
+  this.y = y,
+  this.x = x
 }
 
 Pawn.prototype.move = function(x,y) {
@@ -279,10 +281,10 @@ Pawn.prototype.take = function(piece) {
 }
 
 function Rook(color, x, y) {
-  var color = color
-  var col = y
-  var row = x
-  var moved = false
+  this.color = color,
+  this.y = y,
+  this.x = x,
+  this.moved = false
 }
 
 Rook.prototype.move = function(x,y){
@@ -306,9 +308,9 @@ Rook.prototype.take = function(piece){
 }
 
 function Knight(color, x, y) {
-  var color = color
-  var col = y
-  var row = x
+  this.color = color,
+  this.y = y,
+  this.x = x
 }
 
 Knight.prototype.take = function(piece){
@@ -331,9 +333,9 @@ Knight.prototype.move = function(x,y){
 }
 
 function Bishop(color, x, y) {
-  var color = color
-  var col = y
-  var row = x
+  this.color = color,
+  this.y = y,
+  this.x = x
 }
 
 Bishop.prototype.take = function(piece){
@@ -356,9 +358,9 @@ Bishop.prototype.move = function(x,y){
 }
 
 function Queen(color, x, y) {
-  var color = color
-  var col = y
-  var row = x
+  this.color = color,
+  this.y = y,
+  this.x = x
 }
 
 Queen.prototype.take = function(piece){
@@ -379,10 +381,10 @@ Queen.prototype.move = function(x,y){
 }
 
 function King(color, x, y) {
-  var color = color
-  var col = y
-  var row = x
-  var moved = false
+  this.color = color,
+  this.y = y,
+  this.x = x,
+  this.moved = false
 }
 
 King.prototype.take = function(piece){ //this doesn't look necessary
