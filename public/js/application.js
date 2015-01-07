@@ -55,9 +55,9 @@ var findDistance = function(x1,y1,x2,y2){
 
 var distanceBlocked = function(x,y,directionX,directionY){ // gives distance at which piece's path is blocked
   for (var i = 0; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) &&
-                   ((x+(i*directionX)>=0) && (y+(i*directionY)>=0)); i++){
-    if (Board.array[x+(i*directionX)][y+(i*directionY]!==undefined){
-      if(Board.array[x+(i*directionX)][y+(i*directionY].color==turn){
+                   ((x+(i*directionX)>=0) && (y+(i*directionY)>=0))); i++){
+    if (Board.array[x+(i*directionX)][y+(i*directionY)]!==undefined){
+      if(Board.array[x+(i*directionX)][y+(i*directionY)].color==turn){
         return i-1 // return one space earlier if color matches
       } else {
         return i // can take a differently colored piece
@@ -111,11 +111,11 @@ var inEllShape = function(x1,y1,x2,y2){
 
 
 // objects
-var Game = function() {
-  var board = new Board;
-  board.setup();
-  turn = "white"
-
+function Game() {
+  this.board = new Board;
+  this.board.setup();
+  this.updateChessBoard();
+  this.turn = "white"
 }
 
 // Game.prototype.check = function(){
@@ -135,34 +135,39 @@ Game.prototype.endTurn = function(){
   } else {
     this.turn = "white"
   }
+  this.updateChessBoard();
 }
 
 Game.prototype.updateChessBoard = function(){
   for (var y = 0; y<8; y++){
     for (var x = 0; x<8; x++){
-      if (this.board[x][y] != undefined){
-        updateSquare(x,y);
+      $("#x"+x+"y"+y).removeClass();
+      $("#x"+x+"y"+y).addClass("square");
+      if (this.board.array[x][y] != undefined){
+        this.updateSquare(x,y);
       }
     }
   }
 }
 
 Game.prototype.updateSquare = function(x,y){
-  $("#x"+x+"y"+y).addClass(this.board[x][y].constructor.name + " " + this.board[x][y].color)
+  $("#x"+x+"y"+y).addClass(this.board.array[x][y].constructor.name + " " + this.board.array[x][y].color)
 }
 
-var Board = function(){
-  var array = []
+function Board() {
+
+}
+
+Board.prototype.setup = function(){ // Can this be DRYed up?
+  this.array = []
   for (var x = 0; x<8; x++){
     var row = []
     for (var y = 0; y<8; y++){
       row[y] = []
     }
-    array[x] = row
+  this.array[x] = row
   }
-}
 
-Board.prototype.setup = function(){ // Can this be DRYed up?
   // place pieces onto board
 
   // place pawns onto board
@@ -201,6 +206,7 @@ Board.prototype.setup = function(){ // Can this be DRYed up?
   this.array[4][0] = new King("white",4,0)
 
   this.array[4][7] = new King("black",4,7)
+
 }
 
 Board.prototype.castle = function(color, rook, king){
