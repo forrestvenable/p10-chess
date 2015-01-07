@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <!--
-    normalize.css removes cross-browser differences in defaults, e.g.,
-    differences in how form elements appear between Firefox and IE
-    See: http://necolas.github.com/normalize.css/
-  -->
-  <link rel="stylesheet" href="/css/normalize.css">
-  <!--
-    application.css is where you put your styles
-  -->
-  <link rel="stylesheet" href="/css/application.css">
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <!-- <script src="/js/application.js"></script> -->
-
-  <title></title>
-</head>
-<body>
-
-  <div>Hello world</div>
-  <div class="board">
-    <% 8.times do |x_index|%>
-      <span class="row">
-        <% 8.times do |y_index| %>
-          <div class="square"></div>
-        <% end %>
-      </span class="row">
-    <% end %>
-  </div>
-
-</body>
-</html>
-
+<div class="board">
+  <% 8.times do |y_index|%>
+    <span class="row">
+      <% 8.times do |x_index| %>
+        <div class="square" <%= "x#{x_index}y#{7-y_index}"%>></div>
+      <% end %>
+    </span class="row">
+  <% end %>
+</div>
