@@ -292,12 +292,12 @@ Rook.prototype.move = function(x,y){
   // is blocked by other pieces
   if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
     if(inCardinal(this.x,this.y,x,y)){ //same row/column, not same space
-      Board.array[this.x][this.y] = undefined
+      game.board.array[this.x][this.y] = undefined
 
       this.x = x
       this.y = y
 
-      Board.array[this.x][this.y] = this
+      game.board.array[this.x][this.y] = this
       this.moved = true
     }
   }
@@ -322,12 +322,12 @@ Knight.prototype.move = function(x,y){
   // is not blocked
   if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
     if(inEllShape(this.x,this.y,x,y)){
-      Board.array[this.x][this.y] = undefined
+      game.board.array[this.x][this.y] = undefined
 
       this.x = x
       this.y = y
 
-      Board.array[this.x][this.y] = this
+      game.board.array[this.x][this.y] = this
     }
   }
 }
@@ -347,12 +347,12 @@ Bishop.prototype.move = function(x,y){
   // is blocked by pieces
   if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
     if(inDiagonal(this.x,this.y,x,y)){ //same row/column, not same space
-      Board.array[this.x][this.y] = undefined
+      game.board.array[this.x][this.y] = undefined
 
       this.x = x
       this.y = y
 
-      Board.array[this.x][this.y] = this
+      game.board.array[this.x][this.y] = this
     }
   }
 }
@@ -370,12 +370,12 @@ Queen.prototype.take = function(piece){
 Queen.prototype.move = function(x,y){
   if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
     if(inDiagonal(this.x,this.y,x,y)||inCardinal(this.x,this.y,x,y)){
-      Board.array[this.x][this.y] = undefined
+      game.board.array[this.x][this.y] = undefined
 
       this.x = x
       this.y = y
 
-      Board.array[this.x][this.y] = this
+      game.board.array[this.x][this.y] = this
     }
   }
 }
@@ -394,13 +394,13 @@ King.prototype.take = function(piece){ //this doesn't look necessary
 King.prototype.move = function(x,y){
   if (x<=this.x+1 && x>=this.x-1 &&
       y<=this.y+1 && y>=this.y-1){
-    if(Board.array[x][y].color != this.color){
-      Board.array[this.x][this.y] = undefined
+    if(game.board.array[x][y].color != this.color){
+      game.board.array[this.x][this.y] = undefined
 
       this.x = x
       this.y = y
 
-      Board.array[this.x][this.y] = this
+      game.board.array[this.x][this.y] = this
       this.moved = false
     }
   }

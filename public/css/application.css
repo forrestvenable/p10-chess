@@ -4,7 +4,7 @@ position: absolute;
 top:10%;
 left:10%;
 
-background-color: black;
+background-color: white;
 
 width:640px;
 height:640px;
@@ -20,10 +20,10 @@ height:640px;
   padding:0px;
 }
 
-.row:nth-child(odd) .square:nth-child(even){
-  background:white;
+.row:nth-child(even) .square:nth-child(odd){
+  background:black;
 }
 
-.row:nth-child(even) .square:nth-child(odd){
-  background:white;
+.row:nth-child(odd) .square:nth-child(even){
+  background:black;
 }
