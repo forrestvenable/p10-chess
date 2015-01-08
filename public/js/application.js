@@ -38,12 +38,23 @@ function firstClick(x,y){
 
 function secondClick(x,y){
   if (game.currentPiece.color==game.turn){
-    game.move(game.currentPiece, x, y)
+    if(game.move(game.currentPiece, x, y) && isKing(x,y)){
+      game.status = game.turn
+    }
   }
   game.currentPiece = null
   game.clicked = false
 }
-
+function isKing(x,y){
+  var destination = game.board.array[x][y]
+  if (destination === undefined){
+    return false
+  } else if(destination.constructor.name == "King"){
+    return true
+  } else {
+    return false
+  }
+}
 var withinMaxDistance = function(x1,y1,x2,y2){
   var desiredDistance = findDistance(x1,y1,x2,y2)
   // console.log("desiredDistance",desiredDistance)
@@ -154,6 +165,7 @@ function Game() {
   this.board.setup();
   this.updateChessBoard();
   this.turn = "white"
+  this.status = "ongoing"
   this.clicked = false
   this.currentPiece = null
 }
@@ -168,10 +180,12 @@ Game.prototype.move = function(piece, x, y){
   if(piece.move(x,y) === false){
     console.log(piece)
     console.log("piece didn't move")
+    return false
   } else {
     console.log(piece)
     console.log("piece moved")
     this.endTurn();
+    return true
   }
 }
 
@@ -183,6 +197,9 @@ Game.prototype.endTurn = function(){
   }
   this.updateChessBoard();
   console.log(this.turn)
+  if(this.status == "white" || this.status == "black"){
+    console.log("Winner",this.status)
+  }
 }
 
 Game.prototype.updateChessBoard = function(){
