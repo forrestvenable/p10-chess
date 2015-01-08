@@ -199,7 +199,8 @@ Game.prototype.updateChessBoard = function(){
 }
 
 Game.prototype.updateSquare = function(x,y){
-  $("#x"+x+"y"+y).addClass(this.board.array[x][y].color+this.board.array[x][y].constructor.name)
+  var piece = this.board.array[x][y]
+  $("#x"+x+"y"+y).addClass(piece.color+piece.constructor.name)
 }
 
 function Board() {
@@ -465,7 +466,8 @@ King.prototype.take = function(piece){ //this doesn't look necessary
 
 King.prototype.move = function(x,y){
   if (x<=this.x+1 && x>=this.x-1 &&
-      y<=this.y+1 && y>=this.y-1){
+      y<=this.y+1 && y>=this.y-1 &&
+    !(x==this.x && y==this.y)){
     if(game.board.array[x][y].color != this.color){
       game.board.array[this.x][this.y] = undefined
 
