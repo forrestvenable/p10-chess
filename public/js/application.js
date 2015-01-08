@@ -37,7 +37,9 @@ function firstClick(x,y){
 }
 
 function secondClick(x,y){
-  game.move(game.currentPiece, x, y)
+  if (game.currentPiece.color==game.turn){
+    game.move(game.currentPiece, x, y)
+  }
   game.currentPiece = null
   game.clicked = false
 }
