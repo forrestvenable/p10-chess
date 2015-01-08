@@ -49,12 +49,10 @@ var withinMaxDistance = function(x1,y1,x2,y2){
   // console.log("direction", direction)
   var xDirection = Number(direction[0]);
   var yDirection = Number(direction[1]);
-
   var maxDistance = distanceBlocked(x1,y1,xDirection,yDirection)
-  // console.log("maxDistance", maxDistance)
   if (maxDistance===null){
     return true
-  } else if (desiredDistance<maxDistance){
+  } else if (desiredDistance<=maxDistance){
     return true
   } else {
     return false
@@ -306,15 +304,12 @@ function Pawn(color, x, y) {
 }
 
 Pawn.prototype.move = function(x,y) {
-  // console.log("pawn", this.x, this.y)
-  // console.log("destination",x,y)
-  // console.log(withinMaxDistance(this.x,this.y,x,y))
+
   if(this.color == "white"){
     var direction = 1
   } else {
     var direction = -1
   }
-
   if(onBoard(x,y) && withinMaxDistance(this.x,this.y,x,y)){
     if (this.validMove(direction,x,y)){
       game.board.array[this.x][this.y] = undefined
@@ -332,7 +327,7 @@ Pawn.prototype.validMove = function(direction,x,y){
   if ((this.y+direction == y || (!this.moved && this.y+direction*2 == y)) && this.x == x){
     return game.board.array[x][y] == undefined
   }
-  if((this.x + 1 == x || this.x - 1 == x) && this.y+direction == y){
+  if(((this.x+1 == x) || (this.x - 1 == x)) && this.y+direction == y){
     return game.board.array[x][y] != undefined
   }
   return false
@@ -386,7 +381,7 @@ Knight.prototype.take = function(piece){
 Knight.prototype.move = function(x,y){
   // move in L shape
   // is not blocked
-  if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
+  if (onBoard(x,y)){
     if(inEllShape(this.x,this.y,x,y)){
       game.board.array[this.x][this.y] = undefined
 
