@@ -333,12 +333,6 @@ Pawn.prototype.validMove = function(direction,x,y){
   return false
 }
 
-Pawn.prototype.take = function(piece) {
-  // unless a piece is diagonal, does nothing
-  // if two or pieces are diagonal, provide choice
-  // remove other side's piece at that location from board
-}
-
 function Rook(color, x, y) {
   this.color = color,
   this.y = y,
@@ -364,18 +358,10 @@ Rook.prototype.move = function(x,y){
   return false
 }
 
-Rook.prototype.take = function(piece){
-  // piece must be closest to the rook, vertically or horizontally
-}
-
 function Knight(color, x, y) {
   this.color = color,
   this.y = y,
   this.x = x
-}
-
-Knight.prototype.take = function(piece){
-  // can take any piece it lands on
 }
 
 Knight.prototype.move = function(x,y){
@@ -402,10 +388,6 @@ function Bishop(color, x, y) {
   this.x = x
 }
 
-Bishop.prototype.take = function(piece){
-  // can take closest diagonal piece
-}
-
 Bishop.prototype.move = function(x,y){
   // any amount diagonally
   // is blocked by pieces
@@ -429,10 +411,6 @@ function Queen(color, x, y) {
   this.x = x
 }
 
-Queen.prototype.take = function(piece){
-  // takes first blocking piece
-}
-
 Queen.prototype.move = function(x,y){
   if (withinMaxDistance(this.x,this.y,x,y) && onBoard(x,y)){
     if(inDiagonal(this.x,this.y,x,y)||inCardinal(this.x,this.y,x,y)){
@@ -453,10 +431,6 @@ function King(color, x, y) {
   this.y = y,
   this.x = x,
   this.moved = false
-}
-
-King.prototype.take = function(piece){ //this doesn't look necessary
-  // any adjacent piece
 }
 
 King.prototype.move = function(x,y){
