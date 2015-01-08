@@ -10,28 +10,48 @@ $(document).ready(function() {
 });
 
 function bindEvents(){
-  $(".square").click()
+  $(".square").click(function(){
+    boundClicked = squareClicked.bind(this);
+    boundClicked();
+  })
 }
 
-function squareClicked(){ //incomplete
-  if(clicked===undefined){
-    var clicked = false
+function squareClicked(){
+  var squareId = $(this).attr('id')
+  var xCoord = Number(squareId[1])
+  var yCoord = Number(squareId[3])
+  if(game.clicked === true){
+    secondClick(xCoord,yCoord)
+  } else if(game.clicked === false){
+    firstClick(xCoord,yCoord)
   }
-  if(clicked === false){
-    var coords = [$(this).attr('id')[1],$(this).attr('id')[3]]
-    clicked = true
+}
+
+function firstClick(x,y){
+  game.currentPiece = game.board.array[x][y]
+  if(game.currentPiece !== undefined){
+    game.clicked = true
+  } else {
+    game.currentPiece = null
   }
-  if(clicked === true)
+}
+
+function secondClick(x,y){
+  game.move(game.currentPiece, x, y)
+  game.currentPiece = null
+  game.clicked = false
 }
 
 var withinMaxDistance = function(x1,y1,x2,y2){
   var desiredDistance = findDistance(x1,y1,x2,y2)
-
+  // console.log("desiredDistance",desiredDistance)
   var direction = assignDirection(x1,y1,x2,y2)
-  var xDirection = direction[0]
-  var yDirection = direction[1]
+  // console.log("direction", direction)
+  var xDirection = Number(direction[0]);
+  var yDirection = Number(direction[1]);
 
   var maxDistance = distanceBlocked(x1,y1,xDirection,yDirection)
+  console.log("maxDistance", maxDistance)
   if (maxDistance===null){
     return true
   } else if (desiredDistance<maxDistance){
@@ -64,16 +84,18 @@ var assignDirection = function(x1,y1,x2,y2){
 }
 
 var findDistance = function(x1,y1,x2,y2){
-  var xDistance = Math.abs(x1=x2)
+  var xDistance = Math.abs(x1-x2)
   var yDistance = Math.abs(y1-y2)
   return Math.max(xDistance,yDistance)
 }
 
 var distanceBlocked = function(x,y,directionX,directionY){ // gives distance at which piece's path is blocked
-  for (var i = 0; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) &&
+  console.log("args", x,y,directionX,directionY)
+  // console.log(x.constructor.name, directionX.constructor.name)
+  for (var i = 1; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) &&
                    ((x+(i*directionX)>=0) && (y+(i*directionY)>=0))); i++){
-    if (Board.array[x+(i*directionX)][y+(i*directionY)]!==undefined){
-      if(Board.array[x+(i*directionX)][y+(i*directionY)].color==turn){
+    if (game.board.array[x+(i*directionX)][y+(i*directionY)]!==undefined){
+      if(game.board.array[x+(i*directionX)][y+(i*directionY)].color==game.turn){
         return i-1 // return one space earlier if color matches
       } else {
         return i // can take a differently colored piece
@@ -132,6 +154,8 @@ function Game() {
   this.board.setup();
   this.updateChessBoard();
   this.turn = "white"
+  this.clicked = false
+  this.currentPiece = null
 }
 
 // Game.prototype.check = function(){
@@ -141,8 +165,16 @@ function Game() {
 // }
 
 Game.prototype.move = function(piece, x, y){
-  piece.move(x,y);
+  if(piece.move(x,y) === false){
+    console.log("piece didn't move")
+    // console.log(piece)
+    // console.log(x)
+    // console.log(y)
+  } else {
+    console.log("piece moved")
+  }
   this.endTurn();
+  console.log("move attempted")
 }
 
 Game.prototype.endTurn = function(){
@@ -275,16 +307,21 @@ function Pawn(color, x, y) {
 }
 
 Pawn.prototype.move = function(x,y) {
-  if(onBoard(x,y) && this.y > y && withinMaxDistance(this.x,this.y,x,y)){
+  console.log("pawn", this.x, this.y)
+  console.log("destination",x,y)
+  // console.log(withinMaxDistance(this.x,this.y,x,y))
+  if(onBoard(x,y) && this.y < y && withinMaxDistance(this.x,this.y,x,y)){
     if (!this.moved && (this.y+1 == y || this.y+2 == y) && this.x == x && game.board.array[x][y] == undefined){
       game.board.array[this.x][this.y] = undefined
       this.y = y
       game.board.array[this.x][this.y] = this
+      return true
     } else if((this.x + 1 == x || this.x - 1 == x) && this.y + 1 == y && game.board.array[x][y] != undefined){
       game.board.array[this.x][this.y] = undefined
       this.x = x
       this.y = y
       game.board.array[this.x][this.y] = this
+      return true
     }
   }
   return false
