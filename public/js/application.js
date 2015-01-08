@@ -51,7 +51,7 @@ var withinMaxDistance = function(x1,y1,x2,y2){
   var yDirection = Number(direction[1]);
 
   var maxDistance = distanceBlocked(x1,y1,xDirection,yDirection)
-  console.log("maxDistance", maxDistance)
+  // console.log("maxDistance", maxDistance)
   if (maxDistance===null){
     return true
   } else if (desiredDistance<maxDistance){
@@ -90,7 +90,7 @@ var findDistance = function(x1,y1,x2,y2){
 }
 
 var distanceBlocked = function(x,y,directionX,directionY){ // gives distance at which piece's path is blocked
-  console.log("args", x,y,directionX,directionY)
+  // console.log("args", x,y,directionX,directionY)
   // console.log(x.constructor.name, directionX.constructor.name)
   for (var i = 1; (((x+(i*directionX)<8)  && (y+(i*directionY)<8)) &&
                    ((x+(i*directionX)>=0) && (y+(i*directionY)>=0))); i++){
@@ -166,15 +166,13 @@ function Game() {
 
 Game.prototype.move = function(piece, x, y){
   if(piece.move(x,y) === false){
+    console.log(piece)
     console.log("piece didn't move")
-    // console.log(piece)
-    // console.log(x)
-    // console.log(y)
   } else {
+    console.log(piece)
     console.log("piece moved")
+    this.endTurn();
   }
-  this.endTurn();
-  console.log("move attempted")
 }
 
 Game.prototype.endTurn = function(){
@@ -184,6 +182,7 @@ Game.prototype.endTurn = function(){
     this.turn = "white"
   }
   this.updateChessBoard();
+  console.log(this.turn)
 }
 
 Game.prototype.updateChessBoard = function(){
@@ -193,7 +192,6 @@ Game.prototype.updateChessBoard = function(){
       $("#x"+x+"y"+y).addClass("square");
       currentSquare = this.board.array[x][y]
       if (currentSquare !== undefined){
-        // console.log(currentSquare)
         this.updateSquare(x,y);
       }
     }
@@ -307,22 +305,34 @@ function Pawn(color, x, y) {
 }
 
 Pawn.prototype.move = function(x,y) {
-  console.log("pawn", this.x, this.y)
-  console.log("destination",x,y)
+  // console.log("pawn", this.x, this.y)
+  // console.log("destination",x,y)
   // console.log(withinMaxDistance(this.x,this.y,x,y))
-  if(onBoard(x,y) && this.y < y && withinMaxDistance(this.x,this.y,x,y)){
-    if (!this.moved && (this.y+1 == y || this.y+2 == y) && this.x == x && game.board.array[x][y] == undefined){
-      game.board.array[this.x][this.y] = undefined
-      this.y = y
-      game.board.array[this.x][this.y] = this
-      return true
-    } else if((this.x + 1 == x || this.x - 1 == x) && this.y + 1 == y && game.board.array[x][y] != undefined){
+  if(this.color == "white"){
+    var direction = 1
+  } else {
+    var direction = -1
+  }
+
+  if(onBoard(x,y) && withinMaxDistance(this.x,this.y,x,y)){
+    if (this.validMove(direction,x,y)){
       game.board.array[this.x][this.y] = undefined
       this.x = x
       this.y = y
       game.board.array[this.x][this.y] = this
+      this.moved = true
       return true
     }
+  }
+  return false
+}
+
+Pawn.prototype.validMove = function(direction,x,y){
+  if ((this.y+direction == y || (!this.moved && this.y+direction*2 == y)) && this.x == x){
+    return game.board.array[x][y] == undefined
+  }
+  if((this.x + 1 == x || this.x - 1 == x) && this.y+direction == y){
+    return game.board.array[x][y] != undefined
   }
   return false
 }
@@ -352,8 +362,10 @@ Rook.prototype.move = function(x,y){
 
       game.board.array[this.x][this.y] = this
       this.moved = true
+      return true
     }
   }
+  return false
 }
 
 Rook.prototype.take = function(piece){
@@ -381,8 +393,11 @@ Knight.prototype.move = function(x,y){
       this.y = y
 
       game.board.array[this.x][this.y] = this
+
+      return true
     }
   }
+  return false
 }
 
 function Bishop(color, x, y) {
@@ -406,8 +421,10 @@ Bishop.prototype.move = function(x,y){
       this.y = y
 
       game.board.array[this.x][this.y] = this
+      return true
     }
   }
+  return false
 }
 
 function Queen(color, x, y) {
@@ -429,8 +446,10 @@ Queen.prototype.move = function(x,y){
       this.y = y
 
       game.board.array[this.x][this.y] = this
+      return true
     }
   }
+  return false
 }
 
 function King(color, x, y) {
@@ -455,6 +474,8 @@ King.prototype.move = function(x,y){
 
       game.board.array[this.x][this.y] = this
       this.moved = false
+      return true
     }
   }
+  return false
 }
