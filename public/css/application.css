@@ -27,3 +27,7 @@ height:640px;
 .row:nth-child(odd) .square:nth-child(even){
   background:black;
 }
+
+form {
+  margin-bottom: 10%;
+}
